@@ -22,5 +22,4 @@ setup(name='yamlui',
       author='Adam Coldrick',
       author_email='adam@sotk.co.uk',
       url='http://www.sotk.co.uk',
-      packages=['yamlui'],
-     )
+      packages=['yamlui'],)

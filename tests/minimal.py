@@ -1,4 +1,4 @@
-#/usr/bin/env python
+#!/usr/bin/env python
 # Copyright (c) 2016 Adam Coldrick
 #
 # This program is free software: you can redistribute it and/or

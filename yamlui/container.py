@@ -15,7 +15,7 @@
 
 import pygame
 
-from yamlui.util import create_group, create_surface
+from yamlui.util import create_surface
 
 
 class ContainerSurface(pygame.Surface):
@@ -43,14 +43,14 @@ class ContainerSurface(pygame.Surface):
         :param surface: The pygame Surface to draw on.
 
         """
-        # TODO: Handle relative positioning
+        # TODO(SotK): Handle relative positioning
         surface.blit(self, self.rect)
 
 
 class Container(object):
 
     """A container to hold a set of widgets.
-    
+
     This container can contain an arbitrary set of widgets to
     display on screen. Containers can be nested as much as
     required.
@@ -79,7 +79,6 @@ class Container(object):
 
         self.state = 'idle'
         self.surface = create_surface(self, ContainerSurface)
-        self.group = create_group(self._children)
 
     def update(self):
         """Update the container and its contents."""
@@ -94,6 +93,3 @@ class Container(object):
     def draw(self, surface):
         """Draw the container and its contents on the given surface."""
         self.surface.draw(surface)
-
-        if self._children:
-            self.group.draw()

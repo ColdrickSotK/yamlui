@@ -17,7 +17,8 @@ import sys
 
 import pygame
 
-from yamlui.util import create_surface, parse_children
+from yamlui.util import create_surface
+from yamlui.util import parse_children
 
 
 class Window(object):
@@ -60,7 +61,7 @@ class Window(object):
 
     def handle_event(self, event):
         """Handle an event that occurred in the window."""
-        # TODO: Handle passing events through to children
+        # TODO(SotK): Handle passing events through to children
         if event.type == pygame.QUIT:
             sys.exit(0)
 

@@ -1,0 +1,14 @@
+- object: container
+  properties:
+    opacity: 50%
+    colour: [0, 0, 0]
+    position: [10, 10]
+    width: 380
+    height: 285
+- object: container
+  properties:
+    opacity: 100%
+    colour: [255, 127, 127]
+    position: [10, 305]
+    width: 380
+    height: 285

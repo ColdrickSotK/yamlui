@@ -3,7 +3,7 @@
 yamlui is a library to allow a user interface using pygame to be defined
 in a set of yaml files.
 
-Currently, only "Containers" are implemented.
+Currently, only "Containers" and "Windows" are implemented.
 
 ## Examples
 

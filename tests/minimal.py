@@ -21,32 +21,20 @@ import yamlui
 
 
 pygame.init()
-screen = pygame.display.set_mode((400, 600))
-pygame.display.set_caption('Minimal UI test')
 
 with open('examples/minimal.yaml', 'r') as f:
-    state = yaml.load(f)
-
-elements = []
-for element in state:
-    if element['object'] == 'container':
-        elements.append(yamlui.Container(element))
+    window = yamlui.Window(yaml.load(f))
 
 running = True
 while running:
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        elif event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE:
+        window.handle_event(event)
+        if event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE:
             running = False
         elif event.type == pygame.KEYUP and event.key == pygame.K_d:
-            elements[0].state = 'drag'
+            window.children[0].state = 'drag'
         elif event.type == pygame.KEYUP and event.key == pygame.K_a:
-            elements[0].state = 'idle'
+            window.children[0].state = 'idle'
 
-    screen.fill((255, 255, 255))
-    for element in elements:
-        element.update()
-        element.draw(screen)
-
-    pygame.display.flip()
+    window.update()
+    window.draw()

@@ -17,8 +17,8 @@ import sys
 
 import pygame
 
+from yamlui.parsing import parse_children
 from yamlui.util import create_surface
-from yamlui.util import parse_children
 
 
 class Window(object):
@@ -63,6 +63,8 @@ class Window(object):
         """Handle an event that occurred in the window."""
         # TODO(SotK): Handle passing events through to children
         if event.type == pygame.QUIT:
+            sys.exit(0)
+        elif event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE:
             sys.exit(0)
 
     def update(self):

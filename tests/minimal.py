@@ -15,23 +15,18 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import pygame
-import yaml
 
 import yamlui
 
 
 pygame.init()
 
-with open('examples/minimal.yaml', 'r') as f:
-    window = yamlui.Window(yaml.load(f))
+window = yamlui.generate_ui('examples/minimal.yaml')
 
-running = True
-while running:
+while True:
     for event in pygame.event.get():
         window.handle_event(event)
-        if event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE:
-            running = False
-        elif event.type == pygame.KEYUP and event.key == pygame.K_d:
+        if event.type == pygame.KEYUP and event.key == pygame.K_d:
             window.children[0].state = 'drag'
         elif event.type == pygame.KEYUP and event.key == pygame.K_a:
             window.children[0].state = 'idle'

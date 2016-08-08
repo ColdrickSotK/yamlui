@@ -74,25 +74,3 @@ def create_surface(widget, surface_class=pygame.Surface):
         surface.rect.x, surface.rect.y = widget._properties['position']
 
     return surface
-
-
-def parse_children(definition):
-    """Create the widgets which are children of the given widget.
-
-    Returns a list of widgets created from the `children` list in the
-    given definition.
-
-    """
-    child_defs = definition.get('children')
-    if child_defs is None:
-        return []
-
-    children = []
-    for child_definition in child_defs:
-        child_class = yamlui.class_mapping.get(child_definition['object'])
-        if child_class is None:
-            raise Exception('No class found for %s' %
-                            child_definition['object'])
-        children.append(child_class(child_definition))
-
-    return children

@@ -3,7 +3,22 @@
 yamlui is a library to allow a user interface using pygame to be defined
 in a set of yaml files.
 
-Currently, only "Containers" and "Windows" are implemented.
+## Widgets
+
+### Currently Implemented
+
+* Window
+* Container
+* Label (some missing functionality)
+
+### Planned
+
+* Button
+* Textbox
+* Slider
+* RadioButton
+* CheckBox
+...
 
 ## Examples
 
@@ -15,3 +30,6 @@ them are usable, it will be good!
 At the moment, there is only a minimal test implemented. It can be run
 using `PYTHONPATH="$PYTHONPATH:." python tests/minimal.py`, and will
 render the UI defined by `examples/minimal.yaml`.
+
+Style checks can be run with `tox -e pep8`. It seems you will need pretty
+new versions of tox and pip for this to work.

@@ -26,7 +26,7 @@ def create_group(widgets):
     return pygame.sprite.Group(sprites)
 
 
-def create_surface(widget, surface_class=pygame.Surface):
+def create_surface(widget, surface_class=pygame.Surface, alpha=0):
     """Create a surface to use when drawing this widget.
 
     This requires one of `image` or `colour` to be set in the definition.
@@ -40,6 +40,7 @@ def create_surface(widget, surface_class=pygame.Surface):
 
     :param widget: The Widget to create a surface for.
     :param surface_class: The class to instantiate as the surface itself.
+    :param alpha: The alpha mode to use for the surface.
 
     """
     # Set image if one is defined
@@ -51,9 +52,12 @@ def create_surface(widget, surface_class=pygame.Surface):
     elif any(key in widget._properties for key in ['colour', 'color']):
         width = widget._properties['width']
         height = widget._properties['height']
-        image = pygame.Surface((width, height))
-        image.fill(widget._properties.get(
-            'colour', widget._properties.get('color')))
+        background = widget._properties.get(
+            'colour', widget._properties.get('color'))
+        if len(background) < 4 and alpha == pygame.SRCALPHA:
+            background.append(255)
+        image = pygame.Surface((width, height), flags=alpha)
+        image.fill(background)
 
     else:
         print('WARNING: Did not set surface for container.')

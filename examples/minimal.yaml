@@ -19,3 +19,12 @@ children:
     position: [10, 305]
     width: 380
     height: 285
+  children:
+  - object: label
+    properties:
+      text: Test Label
+      colour: [0, 0, 0, 0]
+      width: 380
+      height: 30
+      position: [15, 310]
+      display: relative

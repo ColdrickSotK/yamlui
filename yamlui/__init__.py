@@ -14,10 +14,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from yamlui.container import Container
+from yamlui.label import Label
 from yamlui.parsing import generate_ui
 from yamlui.window import Window
 
 class_mapping = {
     'window': Window,
-    'container': Container
+    'container': Container,
+    'label': Label
 }

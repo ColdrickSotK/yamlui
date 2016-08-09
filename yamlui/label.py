@@ -16,30 +16,34 @@
 import pygame
 
 from yamlui.util import create_surface
-from yamlui.parsing import parse_children
+from yamlui.fonts import arial_18pt
 
 
-class ContainerSurface(pygame.Surface):
+class LabelSurface(pygame.Surface):
 
-    """The Surface used to represent the container on screen."""
+    """The Surface used to represent the label on screen."""
 
     def __init__(self, image):
-        """Initialise the sprite.
+        """Initialise the surface.
 
         :params image: The original look of the surface.
 
         """
         dimensions = (image.get_rect().width, image.get_rect().height)
-        super(ContainerSurface, self).__init__(dimensions)
+        super(LabelSurface, self).__init__(dimensions, flags=pygame.SRCALPHA)
 
         self.original = image
 
         self.rect = self.get_rect()
-        self.set_alpha(image.get_alpha())
         self.blit(self.original, (0, 0))
 
+    def render_text(self, text, font):
+        # TODO(SotK): configurable colour
+        self.text = font.render(text, True, (255, 255, 255, 255))
+        self.blit(self.text, (0, 0))
+
     def draw(self, surface):
-        """Blit the container onto the given surface.
+        """Blit the label onto the given surface.
 
         :param surface: The pygame Surface to draw on.
 
@@ -48,29 +52,21 @@ class ContainerSurface(pygame.Surface):
         surface.blit(self, self.rect)
 
 
-class Container(object):
+class Label(object):
 
-    """A container to hold a set of widgets.
+    """A text label widget.
 
-    This container can contain an arbitrary set of widgets to
-    display on screen. Containers can be nested as much as
-    required.
+    This label can contain an arbitrary string of text to display on screen.
 
     Example yaml definition::
 
-        - object: container
+        - object: label
           properties:
-            opacity: 75%
-            colour: (0, 0, 0)
-            position: (10, 10)
-            width: 100
-            height: 100
-          children:
-          - object: label
-            properties:
-              text: Test Label
-              position: (10, 10)
-              display: relative
+            text: Test Label
+            colour: [0, 0, 0, 0]
+            position: [20, 20]
+            width: 200
+            height: 20
 
     """
 
@@ -79,22 +75,11 @@ class Container(object):
         self._children = definition.get('children', [])
 
         self.state = 'idle'
-        self.surface = create_surface(self, ContainerSurface)
-        self.children = parse_children(definition)
-
-    def update(self):
-        """Update the container and its contents."""
-        if self.state == 'dragging':
-            dx, dy = pygame.mouse.get_rel()
-            self.surface.rect.x += dx
-            self.surface.rect.y += dy
-        elif self.state == 'drag':
-            pygame.mouse.get_rel()
-            self.state = 'dragging'
+        self.surface = create_surface(self, LabelSurface,
+                                      alpha=pygame.SRCALPHA)
+        # TODO(SotK): Configurable font
+        self.surface.render_text(self._properties['text'], arial_18pt)
 
     def draw(self, surface):
         """Draw the container and its contents on the given surface."""
         self.surface.draw(surface)
-
-        for child in self.children:
-            child.draw(surface)

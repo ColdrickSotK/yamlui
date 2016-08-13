@@ -23,8 +23,8 @@ children:
   - object: label
     properties:
       text: Test Label
-      colour: [0, 0, 0, 0]
-      width: 380
-      height: 30
+      width: 370
+      font: arial
+      font-size: 18
       position: [5, 5]
       display: relative

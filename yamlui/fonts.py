@@ -15,8 +15,19 @@
 
 import pygame
 
-pygame.init()
+if not pygame.font.get_init():
+    pygame.font.init()
 
-arial_18pt = pygame.font.SysFont('arial', 18)
-arial_12pt = pygame.font.SysFont('arial', 12)
-arial_14pt = pygame.font.SysFont('arial', 14)
+_font_cache = {}
+
+def make_font(name, size):
+    cache_name = '%s_%d' % (name, size)
+    if cache_name in _font_cache:
+        return _font_cache[cache_name]
+
+    try:
+        font = pygame.font.Font(name, size)
+    except IOError:
+        font = pygame.font.SysFont(name, size)
+    _font_cache[cache_name] = font
+    return font

@@ -15,8 +15,54 @@
 
 import pygame
 
+from yamlui import fonts
 from yamlui.util import create_surface
-from yamlui.fonts import arial_18pt
+from yamlui.util import render_text_list
+from yamlui.util import wrap_text
+
+
+def create_label_surface(widget):
+    font = fonts.make_font(widget._properties.get('font', 'arial'),
+                           widget._properties.get('font-size', 12))
+
+    word_wrap = widget._properties.get('wrap', False)
+    width = widget._properties.get('width')
+    height = widget._properties.get('height')
+
+    if any(dimension is None for dimension in [width, height]):
+        if 'text' in widget._properties:
+            widget.wrapped = wrap_text(
+                widget._properties['text'], font, width)
+            w, h = render_text_list(widget.wrapped, font).get_size()
+            if width is None:
+                width = w
+            if height is None:
+                height = h
+        else:
+            if width is None:
+                width = 0
+            if height is None:
+                height = 0
+
+    if any(key in widget._properties for key in ['colour', 'color']):
+        background = widget._properties.get(
+            'colour', widget._properties.get('color'))
+        image = pygame.Surface((width, height))
+        image.fill(background)
+        if 'opacity' in widget._properties:
+            percentage = int(widget._properties['opacity'].strip('%'))
+            image.set_alpha(int(255 * percentage / 100))
+        image = image.convert_alpha()
+    else:
+        image = pygame.Surface((width, height)).convert_alpha()
+        image.fill((0, 0, 0, 0))
+
+    surface = LabelSurface(image)
+
+    if 'position' in widget._properties:
+        surface.rect.x, surface.rect.y = widget._properties['position']
+
+    return surface
 
 
 class LabelSurface(pygame.Surface):
@@ -37,10 +83,8 @@ class LabelSurface(pygame.Surface):
         self.rect = self.get_rect()
         self.blit(self.original, (0, 0))
 
-    def render_text(self, text, font):
-        # TODO(SotK): configurable colour
-        self.text = font.render(text, True, (255, 255, 255, 255))
-        self.blit(self.text, (0, 0))
+    def draw_text(self, text):
+        self.blit(text, (0, 0))
 
     def draw(self, surface):
         """Blit the label onto the given surface.
@@ -75,10 +119,20 @@ class Label(object):
         self._children = definition.get('children', [])
 
         self.state = 'idle'
-        self.surface = create_surface(self, LabelSurface,
-                                      alpha=pygame.SRCALPHA)
-        # TODO(SotK): Configurable font
-        self.surface.render_text(self._properties['text'], arial_18pt)
+        self.surface = create_label_surface(self)
+        self.render_text()
+        self.surface.draw_text(self.rendered_text)
+
+    def render_text(self):
+        font = fonts.make_font(self._properties.get('font', 'arial'),
+                               self._properties.get('font-size', 12))
+        if not hasattr(self, 'wrapped'):
+            self.wrapped = wrap_text(self._properties['text'],
+                                     font,
+                                     self._properties.get('width'))
+        colour = self._properties.get('font-colour',
+            self._properties.get('font-color', (255, 255, 255)))
+        self.rendered_text = render_text_list(self.wrapped, font, colour)
 
     def set_relative_position(self):
         x, y = self.parent.surface.rect.topleft

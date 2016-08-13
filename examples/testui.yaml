@@ -16,10 +16,10 @@ children:
   - object: label
     properties:
       text: World Settings
-      colour: [0, 0, 0, 0]
-      width: 200
-      height: 30
-      position: [20, 110]
+      width: 605
+      font: arial
+      font-size: 18
+      position: [10, 10]
       display: relative
 - object: container
   properties:
@@ -32,8 +32,8 @@ children:
   - object: label
     properties:
       text: Township Settings
-      colour: [0, 0, 0, 0]
-      width: 200
-      height: 30
-      position: [655, 110]
+      width: 605
+      font: arial
+      font-size: 18
+      position: [10, 10]
       display: relative

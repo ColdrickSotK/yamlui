@@ -9,7 +9,7 @@ in a set of yaml files.
 
 * Window
 * Container
-* Label (some missing functionality)
+* Label
 
 ### Planned
 
@@ -18,6 +18,7 @@ in a set of yaml files.
 * Slider
 * RadioButton
 * CheckBox
+
 ...
 
 ## Examples

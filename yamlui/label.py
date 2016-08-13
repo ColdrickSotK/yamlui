@@ -92,7 +92,6 @@ class LabelSurface(pygame.Surface):
         :param surface: The pygame Surface to draw on.
 
         """
-        # TODO(SotK): Handle relative positioning
         surface.blit(self, self.rect)
 
 

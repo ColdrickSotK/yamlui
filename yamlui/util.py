@@ -18,14 +18,6 @@ import pygame
 import yamlui
 
 
-def create_group(widgets):
-    """Create a pygame sprite group from a set of widgets."""
-    # TODO(SotK): Do a thing with surfaces not sprites
-    sprites = [widget.sprite for widget in widgets
-               if widget.has_sprite]
-    return pygame.sprite.Group(sprites)
-
-
 def create_surface(widget, surface_class=pygame.Surface, alpha=0):
     """Create a surface to use when drawing this widget.
 

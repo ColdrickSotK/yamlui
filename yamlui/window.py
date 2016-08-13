@@ -61,11 +61,21 @@ class Window(object):
 
     def handle_event(self, event):
         """Handle an event that occurred in the window."""
-        # TODO(SotK): Handle passing events through to children
-        if event.type == pygame.QUIT:
-            sys.exit(0)
-        elif event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE:
-            sys.exit(0)
+        handled = False
+        for child in reversed(self.children):
+            try:
+                handled = child.handle_event(event)
+            except AttributeError:
+                pass
+            if handled:
+                return handled
+        if not handled:
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit(0)
+            elif event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE:
+                pygame.quit()
+                sys.exit(0)
 
     def update(self):
         """Update the window, and all its child widgets."""

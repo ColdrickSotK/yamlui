@@ -82,6 +82,27 @@ class Container(object):
         self.surface = create_surface(self, ContainerSurface)
         self.children = parse_children(definition, self)
 
+    def handle_event(self, event):
+        """Handle an event."""
+        handled = False
+        for child in self.children:
+            try:
+                handled = child.handle_event(event)
+            except AttributeError:
+                pass
+            if handled:
+                return handled
+
+        if not handled:
+            if self.surface.rect.collidepoint(pygame.mouse.get_pos()) > 0:
+                if event.type == pygame.MOUSEBUTTONDOWN and self.state == 'idle':
+                    self.state = 'drag'
+                    return True
+                elif event.type == pygame.MOUSEBUTTONUP and self.state != 'idle':
+                    self.state = 'idle'
+                    return True
+                return False
+
     def update(self):
         """Update the container and its contents."""
         if self.state == 'dragging':

@@ -26,10 +26,5 @@ window = yamlui.generate_ui('examples/minimal.yaml')
 while True:
     for event in pygame.event.get():
         window.handle_event(event)
-        if event.type == pygame.KEYUP and event.key == pygame.K_d:
-            window.children[0].state = 'drag'
-        elif event.type == pygame.KEYUP and event.key == pygame.K_a:
-            window.children[0].state = 'idle'
-
     window.update()
     window.draw()

@@ -80,7 +80,7 @@ class Container(object):
 
         self.state = 'idle'
         self.surface = create_surface(self, ContainerSurface)
-        self.children = parse_children(definition)
+        self.children = parse_children(definition, self)
 
     def update(self):
         """Update the container and its contents."""

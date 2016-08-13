@@ -34,11 +34,14 @@ def generate_ui(path):
     return root_class(definition)
 
 
-def parse_children(definition):
+def parse_children(definition, widget=None):
     """Create the widgets which are children of the given widget.
 
     Returns a list of widgets created from the `children` list in the
     given definition.
+
+    :param definition: The definition of the widget to parse children for.
+    :param widget: The widget which will have the children.
 
     """
     child_defs = definition.get('children')
@@ -51,6 +54,8 @@ def parse_children(definition):
         if child_class is None:
             raise Exception('No class found for %s' %
                             child_definition['object'])
-        children.append(child_class(child_definition))
+        child = child_class(child_definition)
+        child.parent = widget
+        children.append(child)
 
     return children

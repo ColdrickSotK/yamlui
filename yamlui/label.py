@@ -80,6 +80,14 @@ class Label(object):
         # TODO(SotK): Configurable font
         self.surface.render_text(self._properties['text'], arial_18pt)
 
+    def set_relative_position(self):
+        x, y = self.parent.surface.rect.topleft
+        dx, dy = self._properties['position']
+        self.surface.rect.x = x + dx
+        self.surface.rect.y = y + dy
+
     def draw(self, surface):
         """Draw the container and its contents on the given surface."""
+        if self._properties.get('display') == 'relative' and self.parent:
+            self.set_relative_position()
         self.surface.draw(surface)

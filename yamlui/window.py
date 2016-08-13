@@ -19,9 +19,10 @@ import pygame
 
 from yamlui.parsing import parse_children
 from yamlui.util import create_surface
+from yamlui.widget import Widget
 
 
-class Window(object):
+class Window(Widget):
 
     """A window to display on screen.
 
@@ -47,9 +48,7 @@ class Window(object):
     """
 
     def __init__(self, definition):
-        self._properties = definition['properties']
-        self._children = definition.get('children', [])
-        self._cb_args = definition.get('callback-args', {})
+        super(Window, self).__init__(definition)
 
         self.state = 'idle'
         dimensions = [self._properties.get('width', 1000),
@@ -64,12 +63,11 @@ class Window(object):
         """Handle an event that occurred in the window."""
         handled = False
         for child in reversed(self.children):
-            try:
-                handled = child.handle_event(event)
-            except AttributeError:
-                pass
+            handled = child.handle_event(event)
             if handled:
                 return handled
+
+        # The window should close on pygame.QUIT or the escape key going up.
         if not handled:
             if event.type == pygame.QUIT:
                 pygame.quit()

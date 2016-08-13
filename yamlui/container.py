@@ -15,8 +15,9 @@
 
 import pygame
 
-from yamlui.util import create_surface
 from yamlui.parsing import parse_children
+from yamlui.util import create_surface
+from yamlui.widget import Widget
 
 
 class ContainerSurface(pygame.Surface):
@@ -48,7 +49,7 @@ class ContainerSurface(pygame.Surface):
         surface.blit(self, self.rect)
 
 
-class Container(object):
+class Container(Widget):
 
     """A container to hold a set of widgets.
 
@@ -75,9 +76,7 @@ class Container(object):
     """
 
     def __init__(self, definition):
-        self._properties = definition['properties']
-        self._children = definition.get('children', [])
-        self._cb_args = definition.get('callback-args', {})
+        super(Container, self).__init__(definition)
 
         self.state = 'idle'
         self.surface = create_surface(self, ContainerSurface)
@@ -86,11 +85,8 @@ class Container(object):
     def handle_event(self, event):
         """Handle an event."""
         handled = False
-        for child in self.children:
-            try:
-                handled = child.handle_event(event)
-            except AttributeError:
-                pass
+        for child in reversed(self.children):
+            handled = child.handle_event(event)
             if handled:
                 return handled
 

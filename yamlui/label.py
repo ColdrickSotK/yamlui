@@ -16,9 +16,9 @@
 import pygame
 
 from yamlui import fonts
-from yamlui.util import create_surface
 from yamlui.util import render_text_list
 from yamlui.util import wrap_text
+from yamlui.widget import Widget
 
 
 def create_label_surface(widget):
@@ -95,7 +95,7 @@ class LabelSurface(pygame.Surface):
         surface.blit(self, self.rect)
 
 
-class Label(object):
+class Label(Widget):
 
     """A text label widget.
 
@@ -114,9 +114,7 @@ class Label(object):
     """
 
     def __init__(self, definition):
-        self._properties = definition['properties']
-        self._children = definition.get('children', [])
-        self._cb_args = definition.get('callback-args', {})
+        super(Label, self).__init__(definition)
 
         self.state = 'idle'
         self.surface = create_label_surface(self)

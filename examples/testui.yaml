@@ -21,6 +21,15 @@ children:
       font-size: 18
       position: [10, 10]
       display: relative
+  - object: label
+    properties:
+      text: These options allow you to customise the settings used by the map generator when generating your world.
+      width: 605
+      font: arial
+      font-size: 14
+      font-colour: [175, 175, 175]
+      position: [10, 50]
+      display: relative
 - object: container
   properties:
     opacity: 50%
@@ -36,4 +45,13 @@ children:
       font: arial
       font-size: 18
       position: [10, 10]
+      display: relative
+  - object: label
+    properties:
+      text: These options allow you to customise the starting situation of your township's populace.
+      width: 605
+      font: arial
+      font-size: 14
+      font-colour: [175, 175, 175]
+      position: [10, 50]
       display: relative

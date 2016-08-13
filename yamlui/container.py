@@ -77,6 +77,7 @@ class Container(object):
     def __init__(self, definition):
         self._properties = definition['properties']
         self._children = definition.get('children', [])
+        self._cb_args = definition.get('callback-args', {})
 
         self.state = 'idle'
         self.surface = create_surface(self, ContainerSurface)

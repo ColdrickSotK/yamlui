@@ -55,3 +55,33 @@ children:
       font-colour: [175, 175, 175]
       position: [10, 50]
       display: relative
+- object: button
+  properties:
+    text: Main Menu
+    colour: [255, 227, 90]
+    opacity: 60%
+    position: [10, 720]
+    font: arial
+    font-size: 18
+    font-colour: [0, 0, 0]
+    width: 140
+    height: 60
+    hover-effects:
+      opacity: 85%
+      colour: [255, 227, 90]
+    on-click: main_menu
+- object: button
+  properties:
+    text: Start Game
+    colour: [255, 227, 90]
+    opacity: 60%
+    position: [1130, 720]
+    font: arial
+    font-size: 18
+    font-colour: [0, 0, 0]
+    width: 140
+    height: 60
+    hover-effects:
+      opacity: 85%
+      colour: [255, 227, 90]
+    on-click: start_game

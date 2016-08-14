@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # Copyright (c) 2016 Adam Coldrick
 #
 # This program is free software: you can redistribute it and/or
@@ -13,23 +14,35 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from yamlui.button import Button
-from yamlui.container import Container
-from yamlui.label import Label
-from yamlui.parsing import generate_ui
-from yamlui.window import Window
+import pygame
+
+import yamlui
 
 
-class_mapping = {
-    'window': Window,
-    'container': Container,
-    'label': Label,
-    'button': Button
+def start_game(event, **kwargs):
+    print('Start game callback was called with:')
+    print(kwargs)
+    return True
+
+
+def main_menu(event, **kwargs):
+    print('Main menu callback was called with:')
+    print(kwargs)
+    return True
+
+
+callbacks = {
+    'start_game': start_game,
+    'main_menu': main_menu
 }
+yamlui.callbacks.update(callbacks)
 
-callbacks = {}
+pygame.init()
 
-def get_callback(key=None):
-    if key is None:
-        return None
-    return callbacks.get(key)
+window = yamlui.generate_ui('examples/testui.yaml')
+
+while True:
+    for event in pygame.event.get():
+        window.handle_event(event)
+    window.update()
+    window.draw()

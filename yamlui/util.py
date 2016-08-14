@@ -18,7 +18,8 @@ import pygame
 import yamlui
 
 
-def create_surface(widget, surface_class=pygame.Surface, alpha=0):
+def create_surface(widget, surface_class=pygame.Surface, alpha=0,
+                   properties=None):
     """Create a surface to use when drawing this widget.
 
     This requires one of `image` or `colour` to be set in the definition.
@@ -33,19 +34,25 @@ def create_surface(widget, surface_class=pygame.Surface, alpha=0):
     :param widget: The Widget to create a surface for.
     :param surface_class: The class to instantiate as the surface itself.
     :param alpha: The alpha mode to use for the surface.
+    :param properties: The properties dict for this widget.
 
     """
+    if properties is not None:
+        temp = widget._properties
+        temp.update(properties)
+        properties = temp
+    else:
+        properties = widget._properties
+
     # Set image if one is defined
-    if 'image' in widget._properties:
-        image = pygame.image.load(
-            widget._properties['image']).convert_alpha()
+    if 'image' in properties:
+        image = pygame.image.load(properties['image']).convert_alpha()
 
     # Fall back to block colour
-    elif any(key in widget._properties for key in ['colour', 'color']):
-        width = widget._properties['width']
-        height = widget._properties['height']
-        background = widget._properties.get(
-            'colour', widget._properties.get('color'))
+    elif any(key in properties for key in ['colour', 'color']):
+        width = properties['width']
+        height = properties['height']
+        background = properties.get('colour', properties.get('color'))
         if len(background) < 4 and alpha == pygame.SRCALPHA:
             background.append(255)
         image = pygame.Surface((width, height), flags=alpha)
@@ -56,8 +63,8 @@ def create_surface(widget, surface_class=pygame.Surface, alpha=0):
         return
 
     # Set the opacity
-    if 'opacity' in widget._properties:
-        percentage = int(widget._properties['opacity'].strip('%'))
+    if 'opacity' in properties:
+        percentage = int(properties['opacity'].strip('%'))
         image.set_alpha(int(255 * percentage / 100))
 
     if surface_class == pygame.Surface:
@@ -66,8 +73,8 @@ def create_surface(widget, surface_class=pygame.Surface, alpha=0):
         surface = surface_class(image)
 
     # Set initial position
-    if 'position' in widget._properties:
-        surface.rect.x, surface.rect.y = widget._properties['position']
+    if 'position' in properties:
+        surface.rect.x, surface.rect.y = properties['position']
 
     return surface
 

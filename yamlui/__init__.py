@@ -17,6 +17,7 @@ from yamlui.button import Button
 from yamlui.container import Container
 from yamlui.label import Label
 from yamlui.parsing import generate_ui
+from yamlui.textbox import TextBox
 from yamlui.window import Window
 
 
@@ -24,7 +25,8 @@ class_mapping = {
     'window': Window,
     'container': Container,
     'label': Label,
-    'button': Button
+    'button': Button,
+    'textbox': TextBox
 }
 
 callbacks = {}

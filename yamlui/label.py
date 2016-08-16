@@ -15,6 +15,7 @@
 
 import pygame
 
+import yamlui
 from yamlui import fonts
 from yamlui.util import render_text_list
 from yamlui.util import wrap_text
@@ -83,6 +84,10 @@ class LabelSurface(pygame.Surface):
         self.rect = self.get_rect()
         self.blit(self.original, (0, 0))
 
+    def reset(self):
+        self.fill((0, 0, 0, 0))
+        self.blit(self.original, (0, 0))
+
     def draw_text(self, text):
         self.blit(text, (0, 0))
 
@@ -117,6 +122,12 @@ class Label(Widget):
         super(Label, self).__init__(definition)
 
         self.state = 'idle'
+        self.bound = False
+        if 'content-bind' in self._properties:
+            self.bound = True
+            self.get_value = yamlui.get_callback(
+                self._properties['content-bind'])
+
         self.surface = create_label_surface(self)
         self.render_text()
         self.surface.draw_text(self.rendered_text)
@@ -124,13 +135,24 @@ class Label(Widget):
     def render_text(self):
         font = fonts.make_font(self._properties.get('font', 'arial'),
                                self._properties.get('font-size', 12))
-        if not hasattr(self, 'wrapped'):
-            self.wrapped = wrap_text(self._properties['text'],
-                                     font,
-                                     self._properties.get('width'))
+        if self.bound:
+            content = self.get_value()
+        else:
+            content = self._properties['text']
+        self.wrapped = wrap_text(content, font,
+                                 self._properties.get('width'))
         colour = self._properties.get('font-colour',
             self._properties.get('font-color', (255, 255, 255)))
         self.rendered_text = render_text_list(self.wrapped, font, colour)
+
+    def redraw(self):
+        self.render_text()
+        self.surface.reset()
+        self.surface.draw_text(self.rendered_text)
+
+    def update(self):
+        if self.bound:
+            self.redraw()
 
     def set_relative_position(self):
         x, y = self.parent.surface.rect.topleft

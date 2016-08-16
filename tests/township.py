@@ -19,27 +19,50 @@ import pygame
 import yamlui
 
 
-def start_game(event, **kwargs):
+path = 'examples/testui.yaml'
+villagers = ['foo', 'bar', 'baz']
+
+def start_game(event, widget, **kwargs):
     print('Start game callback was called with:')
     print(kwargs)
     return True
 
 
-def main_menu(event, **kwargs):
+def main_menu(event, widget, **kwargs):
     print('Main menu callback was called with:')
     print(kwargs)
     return True
 
 
+def villager_count(event=None, widget=None, **kwargs):
+    return str(len(villagers))
+
+
+def add_villager(event, widget, **kwargs):
+    villagers.append('Ikadir')
+    return True
+
+
+def remove_villager(event, widget, **kwargs):
+    try:
+        villagers.pop()
+        return True
+    except IndexError:
+        return True
+
+
 callbacks = {
     'start_game': start_game,
-    'main_menu': main_menu
+    'main_menu': main_menu,
+    'villager_count': villager_count,
+    'add_villager': add_villager,
+    'remove_villager': remove_villager
 }
 yamlui.callbacks.update(callbacks)
 
 pygame.init()
 
-window = yamlui.generate_ui('examples/testui.yaml')
+window = yamlui.generate_ui(path)
 
 while True:
     for event in pygame.event.get():

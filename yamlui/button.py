@@ -120,7 +120,7 @@ class Button(Widget):
             if cb is None:
                 return False
             self.state = 'idle'
-            return cb(event, **self._cb_args)
+            return cb(event, self, **self._cb_args)
         return False
 
     def set_relative_position(self):

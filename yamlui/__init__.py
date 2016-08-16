@@ -30,6 +30,7 @@ class_mapping = {
 }
 
 callbacks = {}
+trees = {}
 
 def get_callback(key=None):
     if key is None:

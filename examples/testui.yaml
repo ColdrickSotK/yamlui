@@ -1,5 +1,6 @@
 object: window
 properties:
+  name: window
   text: Township Test UI
   image: examples/images/background.png
   width: 1280
@@ -7,6 +8,7 @@ properties:
 children:
 - object: container
   properties:
+    name: worldgen-container
     opacity: 50%
     colour: [0, 0, 0]
     position: [10, 100]
@@ -15,6 +17,7 @@ children:
   children:
   - object: label
     properties:
+      name: worldgen-title-label
       text: World Settings
       width: 605
       font: arial
@@ -23,6 +26,7 @@ children:
       display: relative
   - object: label
     properties:
+      name: worldgen-description-label
       text: These options allow you to customise the settings used by the map generator when generating your world.
       width: 605
       font: arial
@@ -32,6 +36,7 @@ children:
       display: relative
 - object: container
   properties:
+    name: township-container
     opacity: 50%
     colour: [0, 0, 0]
     position: [645, 100]
@@ -40,6 +45,7 @@ children:
   children:
   - object: label
     properties:
+      name: township-title-label
       text: Township Settings
       width: 605
       font: arial
@@ -48,6 +54,7 @@ children:
       display: relative
   - object: label
     properties:
+      name: township-description-label
       text: These options allow you to customise the starting situation of your township's populace.
       width: 605
       font: arial
@@ -57,6 +64,7 @@ children:
       display: relative
   - object: label
     properties:
+      name: township-name-label
       text: Township Name
       width: 120
       font-size: 14
@@ -64,6 +72,7 @@ children:
       display: relative
   - object: textbox
     properties:
+      name: township-name
       width: 475
       height: 25
       position: [140, 100]
@@ -76,6 +85,7 @@ children:
         opacity: 100%
   - object: label
     properties:
+      name: chieftain-name-label
       text: Chieftain Name
       width: 120
       font-size: 14
@@ -83,6 +93,7 @@ children:
       display: relative
   - object: textbox
     properties:
+      name: chieftain-name
       width: 475
       height: 25
       position: [140, 130]
@@ -95,6 +106,7 @@ children:
         opacity: 100%
 - object: button
   properties:
+    name: main-menu-button
     text: Main Menu
     colour: [255, 227, 90]
     opacity: 60%
@@ -110,6 +122,7 @@ children:
     on-click: main_menu
 - object: button
   properties:
+    name: start-game-button
     text: Start Game
     colour: [255, 227, 90]
     opacity: 60%

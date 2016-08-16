@@ -13,25 +13,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import os
+import uuid
+
 import yaml
 
 import yamlui
-
-
-def generate_ui(path):
-    """Takes a path to a yaml UI definition, and generates a UI tree for it.
-
-    :param definition: A UI definition representing the UI to be created.
-
-    """
-    with open(path, 'r') as ui_file:
-        definition = yaml.safe_load(ui_file)
-
-    root_class = yamlui.class_mapping.get(definition['object'])
-    if root_class is None:
-        raise Exception('ERROR: Root class is an unrecognised widget type.')
-
-    return root_class(definition)
 
 
 def parse_children(definition, widget=None):
@@ -59,3 +46,65 @@ def parse_children(definition, widget=None):
         children.append(child)
 
     return children
+
+
+def get_name(widget):
+    """Get a unique name for the widget.
+
+    If the widget's properties contain `name`, then use that. Otherwise
+    generate it a uuid.
+
+    :param widget: The widget to get a name for.
+
+    """
+    return widget._properties.get('name', uuid.uuid4())
+
+
+def build_dictionary(root, ui_name=None):
+    """Build a dictionary containing the given widget and all its descendants.
+
+    :param root: The root widget of the UI tree to build a dictionary for.
+    :param ui_name: The name of this UI tree. If not given, the name of the
+    root widget will be used.
+
+    """
+    name = ui_name or get_name(root)
+    if name in yamlui.trees:
+        raise Exception('Duplicate UI name')
+
+    def add_children(widget, ui_dict):
+        name = get_name(widget)
+        if name in ui_dict:
+            raise Exception('Duplicate widget name')
+
+        ui_dict[get_name(widget)] = widget
+        if not hasattr(widget, 'children'):
+            return
+        for child in widget.children:
+            add_children(child, ui_dict)
+
+    ui_dict = {get_name(root): root}
+    for widget in root.children:
+        add_children(widget, ui_dict)
+
+    return ui_dict
+
+
+def generate_ui(path):
+    """Takes a path to a yaml UI definition, and generates a UI tree for it.
+
+    :param definition: A UI definition representing the UI to be created.
+
+    """
+    with open(path, 'r') as ui_file:
+        definition = yaml.safe_load(ui_file)
+
+    root_class = yamlui.class_mapping.get(definition['object'])
+    if root_class is None:
+        raise Exception('ERROR: Root class is an unrecognised widget type.')
+
+    root = root_class(definition)
+    ui_name = os.path.basename(path)
+    yamlui.trees[ui_name] = build_dictionary(root, ui_name)
+
+    return root

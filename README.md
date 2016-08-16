@@ -11,10 +11,10 @@ in a set of yaml files.
 * Container
 * Label
 * Button
+* Textbox
 
 ### Planned
 
-* Textbox
 * Slider
 * RadioButton
 * CheckBox

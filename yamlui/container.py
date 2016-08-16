@@ -110,6 +110,9 @@ class Container(Widget):
             pygame.mouse.get_rel()
             self.state = 'dragging'
 
+        for child in self.children:
+            child.update()
+
     def draw(self, surface):
         """Draw the container and its contents on the given surface."""
         self.surface.draw(surface)

@@ -13,6 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import string
+
 import pygame
 
 import yamlui
@@ -46,9 +48,12 @@ class TextBoxSurface(pygame.Surface):
         y = (self.rect.height - content.get_height()) / 2
         self.blit(content, (5, y))
 
-    def reset(self):
+    def redraw(self, content=None):
         """Redraw the original image."""
+        self.fill((0, 0, 0, 0))
         self.blit(self.original, (0, 0))
+        if content is not None:
+            self.draw_content(content)
 
     def draw(self, surface):
         """Blit the button onto the given surface.
@@ -89,6 +94,11 @@ class TextBox(Widget):
         self.state = 'idle'
         self.focus = False
         self.content = ''
+        self.valid = string.ascii_letters + string.digits + \
+                     string.punctuation + ' '
+        self.timer = 0
+        self.blink = False
+        self.rendered = None
 
         self.surface = util.create_surface(self, TextBoxSurface)
         self.hover_surface = util.create_surface(
@@ -100,6 +110,24 @@ class TextBox(Widget):
 
     def _collide(self, point):
         return self.surface.rect.collidepoint(point)
+
+    def redraw_text(self):
+        self.surface.redraw(self.rendered)
+        self.hover_surface.redraw(self.rendered)
+        self.focus_surface.redraw(self.rendered)
+
+    def handle_input(self, event):
+        if event.unicode in self.valid:
+            self.content += event.unicode
+            self.rendered = self.render_text()
+        elif event.key == pygame.K_BACKSPACE:
+            self.content = self.content[:-1]
+            self.rendered = self.render_text()
+            self.state = 'deleting'
+        elif event.key == pygame.K_ESCAPE:
+            self.state = 'idle'
+            self.focus = False
+        self.redraw_text()
 
     def handle_event(self, event):
         """Handle an event."""
@@ -125,7 +153,28 @@ class TextBox(Widget):
             elif self.state == 'focused':
                 return True
             return False
+        elif event.type == pygame.KEYDOWN and self.focus:
+            self.handle_input(event)
+            return True
+        elif event.type == pygame.KEYUP and self.focus:
+            if event.key == pygame.K_BACKSPACE:
+                self.state = 'focused'
+                return True
+            return False
         return False
+
+    def render_text(self):
+        font = fonts.make_font(self._properties.get('font', 'arial'),
+                               self._properties.get('font-size', 12))
+        colour = self._properties.get('font-colour',
+            self._properties.get('font-color', (0, 0, 0)))
+        return util.render_text_list([self.content], font, colour)
+
+    def update(self):
+        if pygame.time.get_ticks() - self.timer > 750:
+            self.blink = not self.blink
+            self.timer = pygame.time.get_ticks()
+            self.focus_surface.redraw(self.rendered)
 
     def set_relative_position(self):
         x, y = self.parent.surface.rect.topleft
@@ -148,6 +197,16 @@ class TextBox(Widget):
 
         if self.focus:
             self.focus_surface.draw(surface)
+            colour = self._properties.get('font-colour',
+                self._properties.get('font-color', (0, 0, 0)))
+            if self.blink:
+                if self.rendered is None:
+                    self.focus_surface.fill(colour,
+                        (7, 5, 1, self.focus_surface.get_height() - 10))
+                else:
+                    self.focus_surface.fill(colour,
+                        (self.rendered.get_rect().right + 7, 5, 1,
+                         self.rendered.get_rect().height))
         elif self._collide(pygame.mouse.get_pos()) or self.state == 'click':
             self.hover_surface.draw(surface)
         else:

@@ -47,8 +47,8 @@ class Window(Widget):
 
     """
 
-    def __init__(self, definition):
-        super(Window, self).__init__(definition)
+    def __init__(self, definition, style={}):
+        super(Window, self).__init__(definition, style=style)
 
         self.state = 'idle'
         dimensions = [self._properties.get('width', 1000),
@@ -57,7 +57,7 @@ class Window(Widget):
         pygame.display.set_caption(self._properties['text'])
 
         self.image = create_surface(self)
-        self.children = parse_children(definition)
+        self.children = parse_children(definition, style=style)
 
     def handle_event(self, event):
         """Handle an event that occurred in the window."""

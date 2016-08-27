@@ -1,0 +1,79 @@
+- name: window-menu
+  properties:
+    image: examples/images/background.png
+    width: 1280
+    height: 800
+
+#
+# Containers
+#
+- name: ui-panel
+  properties:
+    opacity: 50%
+    colour: [0, 0, 0]
+- name: ui-panel-halfscreen
+  properties:
+    width: 625
+    height: 600
+
+#
+# Labels
+#
+- name: label-title
+  properties:
+    font-size: 18
+
+- name: label
+  properties:
+    font: arial
+    font-size: 14
+    width: 605
+    display: relative
+
+- name: label-field
+  properties:
+    width: 120
+
+#
+# Text boxes
+#
+- name: textbox
+  properties:
+    width: 475
+    height: 25
+    display: relative
+    colour: [255, 255, 255]
+    opacity: 50%
+    hover-effects:
+      opacity: 75%
+    focus-effects:
+      opacity: 100%
+
+#
+# Buttons
+#
+- name: btn
+  properties:
+    colour: [255, 227, 90]
+    opacity: 60%
+    font: arial
+    font-size: 18
+    font-colour: [0, 0, 0]
+    width: 140
+    height: 60
+    hover-effects:
+      opacity: 85%
+
+- name: btn-icon-square
+  properties:
+    display: relative
+    width: 25
+    height: 25
+
+
+#
+# Text styles
+#
+- name: text-muted
+  properties:
+    font-colour: [175, 175, 175]

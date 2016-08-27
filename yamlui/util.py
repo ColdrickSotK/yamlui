@@ -59,7 +59,8 @@ def create_surface(widget, surface_class=pygame.Surface, alpha=0,
         image.fill(background)
 
     else:
-        print('WARNING: Did not set surface for container.')
+        print properties
+        print('WARNING: Did not set surface for %s' % properties['name'])
         return
 
     # Set the opacity

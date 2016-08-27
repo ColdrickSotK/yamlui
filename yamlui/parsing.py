@@ -21,7 +21,7 @@ import yaml
 import yamlui
 
 
-def parse_children(definition, widget=None):
+def parse_children(definition, widget=None, style={}):
     """Create the widgets which are children of the given widget.
 
     Returns a list of widgets created from the `children` list in the
@@ -41,7 +41,7 @@ def parse_children(definition, widget=None):
         if child_class is None:
             raise Exception('No class found for %s' %
                             child_definition['object'])
-        child = child_class(child_definition)
+        child = child_class(child_definition, style=style)
         child.parent = widget
         children.append(child)
 
@@ -97,13 +97,21 @@ def generate_ui(path):
 
     """
     with open(path, 'r') as ui_file:
-        definition = yaml.safe_load(ui_file)
+        ui = yaml.safe_load(ui_file)
 
+    full_style = {}
+    for style_path in ui.get('include', []):
+        with open(style_path, 'r') as style_file:
+            style = yaml.safe_load(style_file)
+        for definition in style:
+            full_style[definition['name']] = definition['properties']
+
+    definition = ui['definition']
     root_class = yamlui.class_mapping.get(definition['object'])
     if root_class is None:
         raise Exception('ERROR: Root class is an unrecognised widget type.')
 
-    root = root_class(definition)
+    root = root_class(definition, style=full_style)
     ui_name = os.path.basename(path)
     yamlui.trees[ui_name] = build_dictionary(root, ui_name)
 

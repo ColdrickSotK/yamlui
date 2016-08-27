@@ -19,8 +19,12 @@ import pygame
 import yamlui
 
 
-path = 'examples/testui.yaml'
-villagers = ['foo', 'bar', 'baz']
+class Villager(object):
+    def __init__(self, name):
+        self.name = name
+
+path = 'examples/testui/newgame.yaml'
+villagers = [Villager('')]
 
 def start_game(event, widget, **kwargs):
     print('Start game callback was called with:')
@@ -39,16 +43,15 @@ def villager_count(event=None, widget=None, **kwargs):
 
 
 def add_villager(event, widget, **kwargs):
-    villagers.append('Ikadir')
+    if len(villagers) < 10:
+        villagers.append(Villager('Ikadir the %dth' % len(villagers)))
     return True
 
 
 def remove_villager(event, widget, **kwargs):
-    try:
+    if len(villagers) > 1:
         villagers.pop()
-        return True
-    except IndexError:
-        return True
+    return True
 
 
 callbacks = {

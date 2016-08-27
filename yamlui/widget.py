@@ -14,14 +14,42 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import pygame
+import six
+
+
+def update_properties(properties, updated):
+    """Update a properties dict with some given values.
+
+    :param properties: The properties dict to update.
+    :param updated: The updated values to be applied.
+
+    """
+    for key, value in six.iteritems(updated):
+        if key not in properties:
+            properties[key] = value
+            continue
+        if isinstance(value, dict):
+            properties[key].update(value)
+        elif isinstance(value, list):
+            properties[key].append(value)
+        else:
+            properties[key] = value
+    return properties
 
 
 class Widget(object):
 
     """Base class which all UI widgets inherit from."""
 
-    def __init__(self, definition):
-        self._properties = definition['properties']
+    def __init__(self, definition, style={}):
+        resolved_properties = {}
+        for name in definition.get('style', []):
+            resolved_properties = update_properties(
+                resolved_properties, style.get(name, {}))
+        resolved_properties = update_properties(
+            resolved_properties, definition.get('properties', {}))
+
+        self._properties = resolved_properties
         self._childredn = definition.get('children', [])
         self._cb_args = definition.get('callback-args', {})
 

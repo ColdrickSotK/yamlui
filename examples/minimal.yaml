@@ -1,30 +1,31 @@
-object: window
-properties:
-  text: Minimal UI Test
-  colour: [255, 255, 255]
-  width: 400
-  height: 600
-children:
-- object: container
+definition:
+  object: window
   properties:
-    opacity: 50%
-    colour: [0, 0, 0]
-    position: [10, 10]
-    width: 380
-    height: 285
-- object: container
-  properties:
-    opacity: 100%
-    colour: [255, 127, 127]
-    position: [10, 305]
-    width: 380
-    height: 285
+    text: Minimal UI Test
+    colour: [255, 255, 255]
+    width: 400
+    height: 600
   children:
-  - object: label
+  - object: container
     properties:
-      text: Test Label
-      width: 370
-      font: arial
-      font-size: 18
-      position: [5, 5]
-      display: relative
+      opacity: 50%
+      colour: [0, 0, 0]
+      position: [10, 10]
+      width: 380
+      height: 285
+  - object: container
+    properties:
+      opacity: 100%
+      colour: [255, 127, 127]
+      position: [10, 305]
+      width: 380
+      height: 285
+    children:
+    - object: label
+      properties:
+        text: Test Label
+        width: 370
+        font: arial
+        font-size: 18
+        position: [5, 5]
+        display: relative

@@ -75,12 +75,12 @@ class Container(Widget):
 
     """
 
-    def __init__(self, definition):
-        super(Container, self).__init__(definition)
+    def __init__(self, definition, style={}):
+        super(Container, self).__init__(definition, style=style)
 
         self.state = 'idle'
         self.surface = create_surface(self, ContainerSurface)
-        self.children = parse_children(definition, self)
+        self.children = parse_children(definition, widget=self, style=style)
 
     def handle_event(self, event):
         """Handle an event."""

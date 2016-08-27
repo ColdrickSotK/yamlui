@@ -1,0 +1,132 @@
+include:
+  - examples/testui/style/style.yaml
+definition:
+  object: window
+  style: ['window-menu']
+  properties:
+    name: window
+    text: Township Test UI
+  children:
+    - object: container
+      style: ['ui-panel', 'ui-panel-halfscreen']
+      properties:
+        name: worldgen-container
+        position: [10, 100]
+      children:
+      - object: label
+        style: ['label', 'label-title', 'label-halfscreen']
+        properties:
+          name: worldgen-title-label
+          text: World Settings
+          position: [10, 10]
+
+      - object: label
+        style: ['label', 'label-halfscreen', 'text-muted']
+        properties:
+          name: worldgen-description-label
+          text: >
+            These options allow you to customise the settings used
+            by the map generator when generating your world.
+          position: [10, 50]
+
+    - object: container
+      style:
+      - ui-panel
+      - ui-panel-halfscreen
+      properties:
+        name: township-container
+        position: [645, 100]
+      children:
+      - object: label
+        style:
+        - label
+        - label-title
+        properties:
+          name: township-title-label
+          text: Township Settings
+          position: [10, 10]
+
+      - object: label
+        style:
+        - label
+        - text-muted
+        properties:
+          name: township-description-label
+          text: >
+            These options allow you to customise the starting situation
+            of your township's populace.
+          position: [10, 50]
+
+      - object: label
+        style: ['label', 'label-field']
+        properties:
+          name: township-name-label
+          text: Township Name
+          position: [10, 105]
+
+      - object: textbox
+        style: ['textbox']
+        properties:
+          name: township-name
+          position: [140, 100]
+
+      - object: label
+        style: ['label', 'label-field']
+        properties:
+          name: chieftain-name-label
+          text: Chieftain Name
+          position: [10, 135]
+
+      - object: textbox
+        style: ['textbox']
+        properties:
+          name: chieftain-name
+          position: [140, 130]
+
+      - object: label
+        style: ['label', 'label-field']
+        properties:
+          name: starting-villagers-label
+          text: Starting Villagers
+          position: [10, 180]
+
+      - object: button
+        style: ['btn', 'btn-icon-square']
+        properties:
+          name: remove-villager
+          text: '-'
+          position: [140, 175]
+          on-click: remove_villager
+
+      - object: label
+        style: ['label']
+        properties:
+          name: starting-villagers
+          text: '0'
+          width: 25
+          position: [170, 180]
+          content-bind: villager_count
+
+      - object: button
+        style: ['btn', 'btn-icon-square']
+        properties:
+          name: add-villager
+          text: '+'
+          position: [195, 175]
+          on-click: add_villager
+
+    - object: button
+      style: ['btn']
+      properties:
+        name: main-menu-button
+        text: Main Menu
+        position: [10, 720]
+        on-click: main_menu
+
+    - object: button
+      style: ['btn']
+      properties:
+        name: start-game-button
+        text: Start Game
+        position: [1130, 720]
+        on-click: start_game

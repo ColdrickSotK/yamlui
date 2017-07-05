@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Adam Coldrick
+# Copyright (c) 2016-2017 Adam Coldrick
 #
 # This program is free software: you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -22,7 +22,7 @@ from yamlui.util import wrap_text
 from yamlui.widget import Widget
 
 
-def create_label_surface(widget):
+def create_label_surface(widget, override_content=False):
     font = fonts.make_font(widget._properties.get('font', 'arial'),
                            widget._properties.get('font-size', 12))
 
@@ -32,8 +32,9 @@ def create_label_surface(widget):
 
     if any(dimension is None for dimension in [width, height]):
         if 'text' in widget._properties:
-            widget.wrapped = wrap_text(
-                widget._properties['text'], font, width)
+            if not override_content:
+                widget.wrapped = wrap_text(
+                    widget._properties['text'], font, width)
             w, h = render_text_list(widget.wrapped, font).get_size()
             if width is None:
                 width = w
@@ -144,6 +145,8 @@ class Label(Widget):
         colour = self._properties.get('font-colour',
             self._properties.get('font-color', (255, 255, 255)))
         self.rendered_text = render_text_list(self.wrapped, font, colour)
+        if self.bound:
+            self.surface = create_label_surface(self, True)
 
     def redraw(self):
         self.render_text()

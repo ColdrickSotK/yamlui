@@ -124,6 +124,7 @@ class Label(Widget):
 
         self.state = 'idle'
         self.bound = False
+        self.old_content = None
         if 'content-bind' in self._properties:
             self.bound = True
             self.get_value = yamlui.get_callback(
@@ -140,6 +141,9 @@ class Label(Widget):
             content = self.get_value()
         else:
             content = self._properties['text']
+        if content == self.old_content:
+            return False
+        self.old_content = content
         self.wrapped = wrap_text(content, font,
                                  self._properties.get('width'))
         colour = self._properties.get('font-colour',
@@ -147,11 +151,13 @@ class Label(Widget):
         self.rendered_text = render_text_list(self.wrapped, font, colour)
         if self.bound:
             self.surface = create_label_surface(self, True)
+        return True
 
     def redraw(self):
-        self.render_text()
-        self.surface.reset()
-        self.surface.draw_text(self.rendered_text)
+        modified = self.render_text()
+        if modified:
+            self.surface.reset()
+            self.surface.draw_text(self.rendered_text)
 
     def update(self):
         if self.bound:

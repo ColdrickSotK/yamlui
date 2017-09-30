@@ -128,7 +128,7 @@ class Label(Widget):
         if 'content-bind' in self._properties:
             self.bound = True
             self.get_value = yamlui.get_callback(
-                self._properties['content-bind'])
+                self._properties['content-bind'], self)
 
         self.surface = create_label_surface(self)
         self.render_text()

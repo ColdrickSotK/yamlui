@@ -116,7 +116,7 @@ class Button(Widget):
             if not self.surface.rect.collidepoint(pygame.mouse.get_pos()):
                 self.state = 'idle'
                 return False
-            cb = yamlui.get_callback(self._properties.get('on-click'))
+            cb = yamlui.get_callback(self._properties.get('on-click'), self)
             if cb is None:
                 return False
             self.state = 'idle'

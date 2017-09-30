@@ -32,7 +32,18 @@ class_mapping = {
 callbacks = {}
 trees = {}
 
-def get_callback(key=None):
+def get_callback(key=None, widget=None):
     if key is None:
         return None
+
+    # First check for methods of objects bound to a direct
+    # ancestor of the given widget.
+    current = widget
+    while current is not None:
+        if (current.bound_object is not None and
+                hasattr(current.bound_object, key)):
+            return getattr(current.bound_object, key)
+        current = current.parent
+
+    # Otherwise, look in the callbacks dictionary
     return callbacks.get(key)

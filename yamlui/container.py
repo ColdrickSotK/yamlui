@@ -75,8 +75,8 @@ class Container(Widget):
 
     """
 
-    def __init__(self, definition, style={}):
-        super(Container, self).__init__(definition, style=style)
+    def __init__(self, definition, style={}, parent=None):
+        super(Container, self).__init__(definition, style=style, parent=None)
 
         self.state = 'idle'
         self.surface = create_surface(self, ContainerSurface)

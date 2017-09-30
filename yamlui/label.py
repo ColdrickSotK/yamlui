@@ -119,8 +119,8 @@ class Label(Widget):
 
     """
 
-    def __init__(self, definition, style={}):
-        super(Label, self).__init__(definition, style=style)
+    def __init__(self, definition, style={}, parent=None):
+        super(Label, self).__init__(definition, style=style, parent=parent)
 
         self.state = 'idle'
         self.bound = False

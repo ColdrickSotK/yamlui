@@ -41,8 +41,7 @@ def parse_children(definition, widget=None, style={}):
         if child_class is None:
             raise Exception('No class found for %s' %
                             child_definition['object'])
-        child = child_class(child_definition, style=style)
-        child.parent = widget
+        child = child_class(child_definition, style=style, parent=widget)
         children.append(child)
 
     return children

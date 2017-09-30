@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Adam Coldrick
+# Copyright (c) 2016-17 Adam Coldrick
 #
 # This program is free software: you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -41,7 +41,7 @@ class Widget(object):
 
     """Base class which all UI widgets inherit from."""
 
-    def __init__(self, definition, style={}):
+    def __init__(self, definition, style={}, parent=None):
         resolved_properties = {}
         for name in definition.get('style', []):
             resolved_properties = update_properties(
@@ -53,6 +53,7 @@ class Widget(object):
         self._children = definition.get('children', [])
         self._cb_args = definition.get('callback-args', {})
 
+        self.parent = parent
     def handle_event(self, event):
         """Handle an event that has occurred somewhere.
 

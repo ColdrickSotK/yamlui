@@ -47,8 +47,8 @@ class Window(Widget):
 
     """
 
-    def __init__(self, definition, style={}):
-        super(Window, self).__init__(definition, style=style)
+    def __init__(self, definition, style={}, parent=None):
+        super(Window, self).__init__(definition, style=style, parent=parent)
 
         self.state = 'idle'
         dimensions = [self._properties.get('width', 1000),

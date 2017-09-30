@@ -75,8 +75,8 @@ class Button(Widget):
 
     """
 
-    def __init__(self, definition, style={}):
-        super(Button, self).__init__(definition, style=style)
+    def __init__(self, definition, style={}, parent=None):
+        super(Button, self).__init__(definition, style=style, parent=parent)
 
         self.state = 'idle'
         self.surface = util.create_surface(self, ButtonSurface)

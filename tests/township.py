@@ -23,43 +23,39 @@ class Villager(object):
     def __init__(self, name):
         self.name = name
 
+
+class GameSetup(object):
+
+    villagers = [Villager('')]
+
+    def start_game(self, event, widget, **kwargs):
+        print('Start game callback was called with:')
+        print(kwargs)
+        return True
+
+    def main_menu(self, event, widget, **kwargs):
+        print('Main menu callback was called with:')
+        print(kwargs)
+        return True
+
+    def villager_count(self, event=None, widget=None, **kwargs):
+        return str(len(self.villagers))
+
+    def add_villager(self, event, widget, **kwargs):
+        if len(self.villagers) < 10:
+            self.villagers.append(
+                Villager('Ikadir the %dth' % len(self.villagers)))
+        return True
+
+    def remove_villager(self, event, widget, **kwargs):
+        if len(self.villagers) > 1:
+            self.villagers.pop()
+        return True
+
+
 path = 'examples/testui/newgame.yaml'
-villagers = [Villager('')]
-
-def start_game(event, widget, **kwargs):
-    print('Start game callback was called with:')
-    print(kwargs)
-    return True
-
-
-def main_menu(event, widget, **kwargs):
-    print('Main menu callback was called with:')
-    print(kwargs)
-    return True
-
-
-def villager_count(event=None, widget=None, **kwargs):
-    return str(len(villagers))
-
-
-def add_villager(event, widget, **kwargs):
-    if len(villagers) < 10:
-        villagers.append(Villager('Ikadir the %dth' % len(villagers)))
-    return True
-
-
-def remove_villager(event, widget, **kwargs):
-    if len(villagers) > 1:
-        villagers.pop()
-    return True
-
-
 callbacks = {
-    'start_game': start_game,
-    'main_menu': main_menu,
-    'villager_count': villager_count,
-    'add_villager': add_villager,
-    'remove_villager': remove_villager
+    'get_setup': GameSetup
 }
 yamlui.callbacks.update(callbacks)
 

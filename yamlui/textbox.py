@@ -88,8 +88,8 @@ class TextBox(Widget):
 
     """
 
-    def __init__(self, definition, style={}):
-        super(TextBox, self).__init__(definition, style=style)
+    def __init__(self, definition, style={}, parent=None):
+        super(TextBox, self).__init__(definition, style=style, parent=parent)
 
         self.state = 'idle'
         self.focus = False

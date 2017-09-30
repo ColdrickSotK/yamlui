@@ -50,7 +50,7 @@ class Widget(object):
             resolved_properties, definition.get('properties', {}))
 
         self._properties = resolved_properties
-        self._childredn = definition.get('children', [])
+        self._children = definition.get('children', [])
         self._cb_args = definition.get('callback-args', {})
 
     def handle_event(self, event):

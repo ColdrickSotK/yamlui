@@ -92,13 +92,25 @@ class TextBox(Widget):
         super(TextBox, self).__init__(definition, style=style, parent=parent)
 
         self.state = 'idle'
-        self.focus = False
+        self.bound = False
+        self.old_content = None
         self.content = ''
+        if 'content-bind' in self._properties:
+            self.bound = 'one-way'
+            self.bound_content = yamlui.get_callback(
+                self._properties['content-bind'], self)
+            if callable(self.bound_content):
+                self.content = self.bound_content()
+            else:
+                self.content = self.bound_content
+                self.bound = 'two-way'
+
+        self.focus = False
         self.valid = string.ascii_letters + string.digits + \
                      string.punctuation + ' '
         self.timer = 0
         self.blink = False
-        self.rendered = None
+        self.rendered = self.render_text()
 
         self.surface = util.create_surface(self, TextBoxSurface)
         self.hover_surface = util.create_surface(
@@ -107,6 +119,7 @@ class TextBox(Widget):
         self.focus_surface = util.create_surface(
             self, TextBoxSurface,
             properties=self._properties.get('focus-effects'))
+        self.redraw_text()
 
     def _collide(self, point):
         return self.surface.rect.collidepoint(point)
@@ -119,9 +132,17 @@ class TextBox(Widget):
     def handle_input(self, event):
         if event.unicode in self.valid:
             self.content += event.unicode
+            if self.bound == 'two-way':
+                yamlui.two_way_callback(
+                    self._properties['content-bind'], self,
+                    'set', self.content)
             self.rendered = self.render_text()
         elif event.key == pygame.K_BACKSPACE:
             self.content = self.content[:-1]
+            if self.bound == 'two-way':
+                yamlui.two_way_callback(
+                    self._properties['content-bind'], self,
+                    'set', self.content)
             self.rendered = self.render_text()
             self.state = 'deleting'
         elif event.key == pygame.K_ESCAPE:

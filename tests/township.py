@@ -23,13 +23,19 @@ class Villager(object):
     def __init__(self, name):
         self.name = name
 
+    def __repr__(self):
+        return self.name
+
 
 class GameSetup(object):
 
-    villagers = [Villager('')]
+    villagers = [Villager('Riofaal the Magnificent')]
 
     def __init__(self, event, widget):
         super(GameSetup, self).__init__()
+
+    def chieftain(self, event, widget, **kwargs):
+        return self.villagers[0]
 
     def start_game(self, event, widget, **kwargs):
         print('Start game callback was called with:')

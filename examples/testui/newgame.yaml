@@ -79,10 +79,12 @@ definition:
           position: [10, 135]
 
       - object: textbox
+        bind-object: chieftain
         style: ['textbox']
         properties:
           name: chieftain-name
           position: [140, 130]
+          content-bind: name
 
       - object: label
         style: ['label', 'label-field']

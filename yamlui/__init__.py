@@ -47,3 +47,19 @@ def get_callback(key=None, widget=None):
 
     # Otherwise, look in the callbacks dictionary
     return callbacks.get(key)
+
+def two_way_callback(key=None, widget=None, method='get', value=None):
+    if method == 'get':
+        return get_callback(key, widget)
+
+    if key is None:
+        return None
+
+    current = widget
+    while current is not None:
+        if current.bound_object is not None:
+            setattr(current.bound_object, key, value)
+            return getattr(current.bound_object, key)
+        current = current.parent
+
+    return callbacks.get(key, value)

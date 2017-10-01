@@ -127,8 +127,6 @@ class Label(Widget):
         self.old_content = None
         if 'content-bind' in self._properties:
             self.bound = True
-            self.get_value = yamlui.get_callback(
-                self._properties['content-bind'], self)
 
         self.surface = create_label_surface(self)
         self.render_text()
@@ -138,7 +136,10 @@ class Label(Widget):
         font = fonts.make_font(self._properties.get('font', 'arial'),
                                self._properties.get('font-size', 12))
         if self.bound:
-            content = self.get_value()
+            content = yamlui.get_callback(
+                self._properties['content-bind'], self)
+            if callable(content):
+                content = content()
         else:
             content = self._properties['text']
         if content == self.old_content:

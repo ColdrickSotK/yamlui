@@ -57,7 +57,7 @@ class Window(Widget):
         pygame.display.set_caption(self._properties['text'])
 
         self.image = create_surface(self)
-        self.children = parse_children(definition, style=style)
+        self.children = parse_children(definition, widget=self, style=style)
 
     def handle_event(self, event):
         """Handle an event that occurred in the window."""

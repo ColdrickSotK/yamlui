@@ -2,6 +2,7 @@ include:
   - examples/testui/style/style.yaml
 definition:
   object: window
+  bind-object: get_setup
   style: ['window-menu']
   properties:
     name: window
@@ -30,7 +31,6 @@ definition:
           position: [10, 50]
 
     - object: container
-      bind-object: get_setup
       style:
       - ui-panel
       - ui-panel-halfscreen

@@ -28,6 +28,9 @@ class GameSetup(object):
 
     villagers = [Villager('')]
 
+    def __init__(self, event, widget):
+        super(GameSetup, self).__init__()
+
     def start_game(self, event, widget, **kwargs):
         print('Start game callback was called with:')
         print(kwargs)

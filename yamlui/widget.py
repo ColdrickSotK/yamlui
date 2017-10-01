@@ -61,7 +61,10 @@ class Widget(object):
             obj_cb = yamlui.get_callback(
                 definition['bind-object'], widget=self)
             # TODO(SotK): Handle returning a list of objects
-            self.bound_object = obj_cb('bind-object', self)
+            if callable(obj_cb):
+                self.bound_object = obj_cb('bind-object', self)
+            elif isinstance(obj_cb, list):
+                self.bound_object = obj_cb[0]
 
     def handle_event(self, event):
         """Handle an event that has occurred somewhere.

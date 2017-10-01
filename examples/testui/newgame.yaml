@@ -118,6 +118,16 @@ definition:
           position: [195, 175]
           on-click: add_villager
 
+      - object: label
+        bind-object: villagers
+        repeat: yes
+        style: ['label']
+        properties:
+          name: villager-list
+          text: <villager name>
+          position: [15, 210]
+          content-bind: name
+
     - object: button
       style: ['btn']
       properties:

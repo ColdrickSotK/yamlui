@@ -58,7 +58,8 @@ class Widget(object):
         self.parent = parent
         self.bound_object = None
         if 'bind-object' in definition:
-            obj_cb = yamlui.get_callback(definition['bind-object'])
+            obj_cb = yamlui.get_callback(
+                definition['bind-object'], widget=self)
             # TODO(SotK): Handle returning a list of objects
             self.bound_object = obj_cb()
 

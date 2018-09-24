@@ -53,7 +53,10 @@ class Window(Widget):
         self.state = 'idle'
         dimensions = [self._properties.get('width', 1000),
                       self._properties.get('height', 500)]
-        self.surface = pygame.display.set_mode(dimensions)
+        flags = 0
+        if self._properties.get('fullscreen', False):
+            flags |= pygame.FULLSCREEN | pygame.HWSURFACE
+        self.surface = pygame.display.set_mode(dimensions, flags)
         pygame.display.set_caption(self._properties['text'])
 
         self.image = create_surface(self)

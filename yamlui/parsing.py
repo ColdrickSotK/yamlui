@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import importlib
 import os
 import uuid
 
@@ -89,12 +90,19 @@ def build_dictionary(root, ui_name=None):
     return ui_dict
 
 
-def generate_ui(path):
-    """Takes a path to a yaml UI definition, and generates a UI tree for it.
+def generate_ui(path, modules=[]):
+    """Takes a path to a YAML UI definition, and generates a UI tree for it.
 
     :param definition: A UI definition representing the UI to be created.
+    :param modules: (Optional) A list of module names which need to be
+        imported in order to generate the UI tree. This should include all
+        module names which define custom widgets or callbacks using
+        decorators that are used in the definition.
 
     """
+    for module in modules:
+        importlib.import_module(module)
+
     with open(path, 'r') as ui_file:
         ui = yaml.safe_load(ui_file)
 

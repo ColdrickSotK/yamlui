@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
 import pygame
 
 import yamlui
@@ -27,6 +28,7 @@ class Villager(object):
         return self.name
 
 
+@yamlui.callback('get_setup')
 class GameSetup(object):
 
     villagers = [Villager('Riofaal the Magnificent')]
@@ -62,14 +64,9 @@ class GameSetup(object):
         return True
 
 
-path = 'examples/testui/newgame.yaml'
-callbacks = {
-    'get_setup': GameSetup
-}
-yamlui.callbacks.update(callbacks)
-
 pygame.init()
 
+path = 'examples/testui/newgame.yaml'
 window = yamlui.generate_ui(path)
 
 while True:

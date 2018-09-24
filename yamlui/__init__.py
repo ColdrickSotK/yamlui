@@ -15,6 +15,7 @@
 
 from yamlui.button import Button
 from yamlui.container import Container
+from yamlui.decorators import callback, widget
 from yamlui.label import Label
 from yamlui.parsing import generate_ui
 from yamlui.textbox import TextBox
@@ -32,6 +33,7 @@ class_mapping = {
 callbacks = {}
 trees = {}
 
+
 def get_callback(key=None, widget=None):
     if key is None:
         return None
@@ -47,6 +49,7 @@ def get_callback(key=None, widget=None):
 
     # Otherwise, look in the callbacks dictionary
     return callbacks.get(key)
+
 
 def two_way_callback(key=None, widget=None, method='get', value=None):
     if method == 'get':
